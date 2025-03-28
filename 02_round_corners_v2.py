@@ -9,6 +9,7 @@ root = Tk()
 # Rounded Button Class
 class RoundedButton(tk.Canvas):
 
+    # Creates the button
     def __init__(self, parent, width, height, cornerradius, padding, color, bg, command=None):
         tk.Canvas.__init__(self, parent, borderwidth=0,
             relief="flat", highlightthickness=0, bg=bg)
@@ -44,6 +45,7 @@ class RoundedButton(tk.Canvas):
         self.bind("<ButtonPress-1>", self._on_press)
         self.bind("<ButtonRelease-1>", self._on_release)
 
+    # When button is pressed...
     def _on_press(self, event):
         self.configure(relief="sunken")
 
@@ -52,7 +54,7 @@ class RoundedButton(tk.Canvas):
         if self.command is not None:
             self.command()
 
-
+# ...prints text
 def test():
     print("Hello")
 
