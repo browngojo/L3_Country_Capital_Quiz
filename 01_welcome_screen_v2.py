@@ -1,3 +1,5 @@
+# Failed trialling, trying to integrate code from 02_round_corners_v3.py
+
 from tkinter import *
 import tkinter as tk
 
@@ -36,6 +38,7 @@ class Welcome(tk.Canvas):
                                   )
         self.welcome_text.grid(row=1, pady=5, padx=0)
 
+        # Button Creation...
         super(Welcome, self).__init__(master, *args, **kwargs)
         self.config(bg=self.master["bg"])
         self.btnbackground = btnbackground
