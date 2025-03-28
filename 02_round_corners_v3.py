@@ -1,8 +1,12 @@
+# Third Trial code for creating rounded buttons...
+# Adds text to the button
+
 import tkinter as tk
 
 
 class RoundedButton(tk.Canvas):
 
+    # Creates the button
     def __init__(self, master=None, text: str = "", radius=25, btnforeground="#000000", btnbackground="#ffffff",
                  clicked=None, *args, **kwargs):
         super(RoundedButton, self).__init__(master, *args, **kwargs)
@@ -97,6 +101,7 @@ def func():
     print("Button pressed")
 
 
+# Main Routine
 root = tk.Tk()
 btn = RoundedButton(text="This is a \n rounded button", radius=100, btnbackground="#0078ff", btnforeground="#ffffff",
                     clicked=func)
