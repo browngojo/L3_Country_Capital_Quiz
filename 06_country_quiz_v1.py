@@ -153,7 +153,9 @@ class CountryQuiz:
 
         self.round_label.grid(row=1, pady=10, padx=10)
 
-        self.results_label = Label(self.country_frame, text="You chose, result", font=("Arial", "12"), bg="#D5E8D4", wraplength=300, justify="left")
+        self.results_label = Label(self.country_frame, text="You chose, result",
+                                   font=("Arial", "12"), bg="#FFE1C6",
+                                   wraplength=500, justify="left")
 
         self.results_label.grid(row=5, pady=10, padx=10)
 
@@ -162,7 +164,7 @@ class CountryQuiz:
         self.image_label.grid(row=2)
 
         # set up country button...
-        self.button_frame = Frame(self.country_frame)
+        self.button_frame = Frame(self.country_frame, bg="#FFE1C6")
         self.button_frame.grid(row=3)
 
         self.country_button_ref = []
@@ -180,8 +182,12 @@ class CountryQuiz:
             self.country_button_ref.append(self.country_button)
 
         # Button to shuffle
-        self.next_button = Button(self.country_frame, text="Next Flag", command=self.new_round)
-        self.next_button.grid(row=4)
+        self.next_button = Button(self.country_frame, text="Next Flag",
+                                  font=("Arial", "15", "bold"), command=self.new_round, width=29, bg="#2E93FF")
+        self.next_button.grid(row=4, pady=10)
+
+        self.end_game_button = Button(self.country_frame, text="End", bg="#E23C3C", command=self.close_game, font=("Arial", "16", "bold"), fg="#FFFFFF", width=21)
+        self.end_game_button.grid(row=7, padx=5, pady=5)
 
         # Once interface has been created, invoke new
         # round function for first round
@@ -192,6 +198,7 @@ class CountryQuiz:
         Chooses four countries and Configures
         buttons with chosen colours
         """
+
         # Receives the country and flag chosen
         self.round_countries, self.round_country = get_round_flags()
 
@@ -215,7 +222,7 @@ class CountryQuiz:
 
         # Update heading, and score to beat labels. "Hide" results label
         self.round_label.config(text=f"Round {rounds_played + 1} of {rounds_wanted}")
-        self.results_label.config(text=f"{'=' * 7}", bg="#F0F0F0")
+        self.results_label.config(text=f"{'=' * 7}", bg="#FFE1C6")
 
         # enable country buttons (disabled at the end of the last round)
         for count, item in enumerate(self.country_button_ref):
@@ -250,14 +257,14 @@ class CountryQuiz:
         # target = self.target_score.get()
 
         if user_choice == round_country:
-            result_text = f"Success! {round_country}"
+            result_text = f"Amazing! {round_country} is correct"
             result_bg = "#82B366"
 
             rounds_won += 1
             self.rounds_won.set(rounds_won)
 
         else:
-            result_text = f"Oops {user_choice}"
+            result_text = f"Oops, it was {round_country}"
             result_bg = "#F8CECC"
 
         self.results_label.config(text=result_text, bg=result_bg)
@@ -281,6 +288,12 @@ class CountryQuiz:
 
         # Test if rounds_won working
         print(rounds_won)
+
+    def close_game(self):
+        # reshow root (ie: choose rounds) and end current
+        # game / allow new game to start
+        root.deiconify()
+        self.play_box.destroy()
 
 
 # Main Routine
