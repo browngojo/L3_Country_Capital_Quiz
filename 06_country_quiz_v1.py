@@ -203,7 +203,7 @@ class CountryQuiz:
         self.round_countries, self.round_country = get_round_flags()
 
         # Prints country name list for testing
-        print(self.round_countries)
+        #print(self.round_countries)
 
         self.round_flag = self.round_country[3]
 
@@ -282,12 +282,13 @@ class CountryQuiz:
             self.round_label.config(text="Game Over")
 
             self.next_button.config(state=DISABLED, text="Game Over")
+            self.end_game_button.config(text="Play Again", bg="#006600")
 
         for item in self.country_button_ref:
             item.config(state=DISABLED)
 
         # Test if rounds_won working
-        print(rounds_won)
+        #print(rounds_won)
 
     def close_game(self):
         # reshow root (ie: choose rounds) and end current
