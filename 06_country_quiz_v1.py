@@ -115,7 +115,7 @@ class AskRounds():
 
 class CountryQuiz:
     """
-    Displays flag of the country chosen
+    Set up the GUI, displays flag
     """
 
     def __init__(self, how_many):
@@ -195,7 +195,7 @@ class CountryQuiz:
 
     def new_round(self):
         """
-        Chooses four countries and Configures
+        Chooses four countries and configures
         buttons with chosen colours
         """
 
@@ -203,7 +203,7 @@ class CountryQuiz:
         self.round_countries, self.round_country = get_round_flags()
 
         # Prints country name list for testing
-        #print(self.round_countries)
+        print(self.round_countries)
 
         self.round_flag = self.round_country[3]
 
@@ -232,13 +232,9 @@ class CountryQuiz:
 
     def round_results(self, user_choice):
         """
-        Retrieves which button was pushed (index 0 - 3), retrieves
-        score and then compares it with the median, update results
-        and adds results to stats list
+        Retrieves which button was pushed (index 0 - 3), retrieves country name
+        and checks if user was correct
         """
-
-        # get user score and colour based on button press...
-        # score = int(self.round_[user_choice][1])
 
         # Add one to the number of rounds played and retrieve
         # the number of rounds won
@@ -253,9 +249,7 @@ class CountryQuiz:
 
         round_country = self.round_country[0]
 
-        # retrieve target score and compare with user score to find round result
-        # target = self.target_score.get()
-
+        # If chosen country name is correct, congratulates user
         if user_choice == round_country:
             result_text = f"Amazing! {round_country} is correct"
             result_bg = "#82B366"
@@ -263,6 +257,7 @@ class CountryQuiz:
             rounds_won += 1
             self.rounds_won.set(rounds_won)
 
+        # Else displays correct answer
         else:
             result_text = f"Oops, it was {round_country}"
             result_bg = "#F8CECC"
@@ -288,7 +283,7 @@ class CountryQuiz:
             item.config(state=DISABLED)
 
         # Test if rounds_won working
-        #print(rounds_won)
+        print(rounds_won)
 
     def close_game(self):
         # reshow root (ie: choose rounds) and end current
@@ -300,6 +295,6 @@ class CountryQuiz:
 # Main Routine
 if __name__ == "__main__":
     root = Tk()
-    root.title("Country Quiz")
+    root.title("Capital Quiz")
     AskRounds()
     root.mainloop()
