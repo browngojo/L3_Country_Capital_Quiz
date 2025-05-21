@@ -87,12 +87,13 @@ class Welcome:
                                   bg="#76A333", fg="white", command=self.to_askrounds, width=20)
         self.next_button.grid(row=2, padx=0, pady=5)
 
+
     # .... closes welcome screen (will soon link to the next GUI)
     def to_askrounds(self):
-        # Closes Welcome GUI
-        self.welcome_frame.destroy()
         # Calls Ask Round GUI
         AskRounds()
+        # Closes Welcome GUI
+        root.withdraw()
 
 
 class AskRounds:
@@ -105,7 +106,12 @@ class AskRounds:
         Ask Rounds GUI
         """
 
-        self.round_frame = Frame(padx=10, pady=10, bg="#C7DAFF")
+        self.play_box = Toplevel()
+
+        # If users press the 'x' on the game window, end the entire game!
+        self.play_box.protocol('WM_DELETE_WINDOW', root.destroy)
+
+        self.round_frame = Frame(self.play_box, padx=10, pady=10, bg="#C7DAFF")
 
         self.round_frame.grid()
 
@@ -167,7 +173,7 @@ class AskRounds:
 
     def to_quiztype(self, rounds_wanted):
         # Closes Ask Rounds GUI
-        self.round_frame.destroy()
+        self.play_box.destroy()
         # Calls Quiz Type GUI
         QuizType(rounds_wanted)
 
@@ -178,9 +184,12 @@ class QuizType:
     """
 
     def __init__(self, rounds_wanted):
-        self.root = None
+        self.play_box = Toplevel()
 
-        self.welcome_frame = Frame(padx=20, pady=10, bg="#FFE1C6")
+        # If users press the 'x' on the game window, end the entire game!
+        self.play_box.protocol('WM_DELETE_WINDOW', root.destroy)
+
+        self.welcome_frame = Frame(self.play_box, padx=20, pady=10, bg="#FFE1C6")
 
         self.welcome_frame.grid()
 
@@ -190,7 +199,7 @@ class QuizType:
                                      font=("Arial", "18", "bold"), bg="#FFE1C6", width=31)
         self.welcome_heading.grid(row=0)
 
-        self.button_frame = Frame(padx=20, pady=10, bg="#FFE1C6")
+        self.button_frame = Frame(self.play_box, padx=20, pady=10, bg="#FFE1C6")
         self.button_frame.grid(row=1)
 
         # Button List
@@ -214,8 +223,7 @@ class QuizType:
 
     def to_quiz(self, quiz_type, rounds_wanted):
         # Deletes frames
-        self.welcome_frame.destroy()
-        self.button_frame.destroy()
+        self.play_box.destroy()
         CountryCapitalQuiz(rounds_wanted, quiz_type)
 
 
@@ -318,7 +326,7 @@ class CountryCapitalQuiz:
         self.round_countries, self.round_country = get_round_flags()
 
         # Prints country name list for testing
-        print(self.round_countries)
+        #print(self.round_countries)
 
         self.country = self.round_country[0]
         self.round_flag = self.round_country[3]
@@ -413,7 +421,7 @@ class CountryCapitalQuiz:
             item.config(state=DISABLED)
 
         # Test if rounds_won working
-        print(rounds_won)
+        #print(rounds_won)
 
     def close_game(self):
         # reshow root (ie: choose rounds) and end current
