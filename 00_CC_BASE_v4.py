@@ -280,7 +280,7 @@ class CountryCapitalQuiz:
                                    font=("Arial", "12"), bg="#FFE1C6",
                                    wraplength=500, justify="left")
 
-        self.results_label.grid(row=6, pady=10, padx=10)
+        self.results_label.grid(row=5, pady=10, padx=10)
 
         # Create a label to display the image
         self.image_label = Label(self.quiz_frame, image=self.photo, bg="#FFE1C6")
@@ -306,16 +306,28 @@ class CountryCapitalQuiz:
 
         # Button to shuffle
         self.next_button = Button(self.quiz_frame, text="Next Round",
-                                  font=("Arial", "15", "bold"), command=self.new_round, width=29, bg="#2E93FF")
-        self.next_button.grid(row=5, pady=10)
+                                  font=("Arial", "16", "bold"), fg="#FFFFFF", command=self.new_round, width=20, bg="#2E93FF")
+        self.next_button.grid(row=6, pady=10)
 
         self.end_game_button = Button(self.quiz_frame, text="End", bg="#E23C3C", command=self.close_game, font=("Arial", "16", "bold"), fg="#FFFFFF", width=20)
         self.end_game_button.grid(row=8, padx=5, pady=5)
 
-        self.hints_button = Button(self.quiz_frame, font=("Arial", "16", "bold"),
-                                   text="Hints", width=20, fg="#FFFFFF",
+        self.hint_stats_frame = Frame(self.quiz_frame, bg="#FFE1C6")
+        self.hint_stats_frame.grid(row=7)
+
+        # Hints Button
+        self.hints_button = Button(self.hint_stats_frame, font=("Arial", "16", "bold"),
+                                   text="Hints", width=9, fg="#FFFFFF",
                                    bg="#A680B8", command=self.to_hints)
-        self.hints_button.grid(row=7, column=0, padx=5, pady=5)
+        self.hints_button.grid(row=0, column=0, padx=5, pady=5)
+
+        # Stats Button
+        self.stats_button = Button(self.hint_stats_frame, font=("Arial", "16", "bold"),
+                                   text="Stats", width=9, fg="#FFFFFF",
+                                   bg="#DA67BC", command=self.to_stats)
+        self.stats_button.grid(row=0, column=1, padx=5, pady=5)
+
+        self.stats_button.config(state=DISABLED)
 
         # Once interface has been created, invoke new
         # round function for first round
@@ -409,6 +421,7 @@ class CountryCapitalQuiz:
 
         # enable stats & next buttons, disable colour buttons
         self.next_button.config(state=NORMAL)
+        self.stats_button.config(state=NORMAL)
 
         # check to see if game is over
         rounds_wanted = self.rounds_wanted.get()
@@ -440,6 +453,103 @@ class CountryCapitalQuiz:
         :return:
         """
         DisplayHints(self)
+
+    def to_stats(self):
+        """
+        Retrieves everything we need to display the quiz / round statistics
+        """
+        # IMPORTANT: Retrieve number of rounds
+        # won as a number (rather than the 'self' container)
+        rounds_won = self.rounds_won.get()
+        rounds_played = self.rounds_played.get()
+        stats_bundle = [rounds_won, rounds_played]
+
+        Stats(self, stats_bundle)
+
+class Stats:
+    """
+    Displays stats for Country & Capital Quiz
+    """
+
+    def __init__(self, partner, all_stats_info):
+
+        # disable buttons to prevent program crashing
+        partner.hints_button.config(state=DISABLED)
+        partner.end_game_button.config(state=DISABLED)
+        partner.stats_button.config(state=DISABLED)
+
+        # Extract information from master list...
+        rounds_won = all_stats_info[0]
+        rounds_played = all_stats_info[1]
+
+        self.stats_box = Toplevel()
+
+        # Disable help button
+        partner.stats_button.config(state=DISABLED)
+
+        # If users press cross at top, closes help and 'releases' help button
+        self.stats_box.protocol('WM_DELETE_WINDOW',
+                                partial(self.close_stats, partner))
+
+        self.stats_frame = Frame(self.stats_box, width=350)
+        self.stats_frame.grid()
+
+        success_rate = rounds_won / rounds_played * 100
+
+        # Strings for Stats labels...
+
+        rounds_string = f"Rounds Played: {rounds_played}\nRounds Won: {rounds_won}"
+        success_string = f"Success Rate: {rounds_won} / {rounds_played} ({success_rate:.0f}%)"
+
+        # custom comment text and formatting
+        if success_rate == 100:
+            comment_string = "Amazing! You answered all rounds correctly"
+            comment_colour = "#D5E8D4"
+
+        elif success_rate == 0:
+            comment_string = "Oops - You lost every round! You might want to look at the hints!"
+            comment_colour = "#F8CECC"
+        else:
+            comment_string = ""
+            comment_colour = "#F0F0F0"
+
+        heading_font = ("Arial", "16", "bold")
+        normal_font = ("Arial", "14")
+        comment_font = ("Arial", "13")
+
+        # Label list (text | font | 'Sticky')
+        all_stats_strings = [
+            ["Statistics", heading_font, "W"],
+            [rounds_string, normal_font, "W"],
+            [success_string, normal_font, "W"],
+            [comment_string, comment_font, "W"],
+        ]
+
+        stats_label_ref_list = []
+        for count, item in enumerate(all_stats_strings):
+            self.stats_label = Label(self.stats_frame, text=item[0], font=item[1],
+                                     anchor="w", justify="left",
+                                     padx=30, pady=5)
+            self.stats_label.grid(row=count, sticky=item[2], padx=10)
+            stats_label_ref_list.append(self.stats_label)
+
+        # Configure comment label background (for all won / all lost)
+        stats_comment_label = stats_label_ref_list[3]
+        stats_comment_label.config(bg=comment_colour)
+
+        # Stats Button
+        self.dismiss_button = Button(self.stats_frame, font=("Arial", "16", "bold"),
+                                   text="Stats", width=9, fg="#FFFFFF",
+                                   bg="#DA67BC", command=self.close_stats)
+        self.dismiss_button.grid(row=4, column=1, padx=5, pady=5)
+
+    def close_stats(self, partner):
+        # Put help button back to normal...
+        partner.hints_button.config(state=NORMAL)
+        partner.end_game_button.config(state=NORMAL)
+        partner.stats_button.config(state=NORMAL)
+        self.stats_box.destroy()
+
 
 class DisplayHints:
 
