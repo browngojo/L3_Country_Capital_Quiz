@@ -62,23 +62,23 @@ class Welcome:
                         "and all the best!")
 
     def __init__(self):
+        # Setup dialogue box and background colour
+        background = "#C2E292"
 
-        self.welcome_frame = Frame(padx=20, pady=10, bg="#C2E292")
+        self.welcome_frame = Frame(padx=20, pady=10)
 
         self.welcome_frame.grid()
 
         # Heading Text
         self.welcome_heading = Label(self.welcome_frame,
                                      text="Welcome to the Country-Capital Quiz!",
-                                     font=("Arial", "16", "bold"), bg="#C2E292"
-                                     )
+                                     font=("Arial", "16", "bold"))
         self.welcome_heading.grid(row=0)
 
         # Body Text
         self.welcome_text = Label(self.welcome_frame,
                                   text=self.information_text, justify="left", wraplength=450,
-                                  font=("Arial", "11", "normal"), bg="#C2E292"
-                                  )
+                                  font=("Arial", "11", "normal"))
         self.welcome_text.grid(row=1, pady=5, padx=0)
 
         # Button when clicked.....
@@ -87,6 +87,12 @@ class Welcome:
                                   bg="#76A333", fg="white", command=self.to_askrounds, width=18)
         self.next_button.grid(row=2, padx=0, pady=5)
 
+        # List and loop to set background colour on
+        # everything except the buttons
+        recolour_list = [self.welcome_frame, self.welcome_heading, self.welcome_text]
+
+        for item in recolour_list:
+            item.config(bg=background)
 
     # .... closes welcome screen (will soon link to the next GUI)
     def to_askrounds(self):
@@ -106,27 +112,30 @@ class AskRounds:
         Ask Rounds GUI
         """
 
+        # Setup dialogue box and background colour
+        background = "#C7DAFF"
+
         self.play_box = Toplevel()
 
         # If users press the 'x' on the game window, end the entire game!
         self.play_box.protocol('WM_DELETE_WINDOW', root.destroy)
 
-        self.round_frame = Frame(self.play_box, padx=10, pady=10, bg="#C7DAFF")
+        self.round_frame = Frame(self.play_box, padx=10, pady=10)
 
         self.round_frame.grid()
 
         self.round_heading = Label(self.round_frame, font=("Arial", "15", "bold"),
-                                   text="Countries & Capitals", bg="#C7DAFF")
+                                   text="Countries & Capitals")
         self.round_heading.grid(row=0, pady=10, padx=10)
 
         self.round_text = Label(self.round_frame, font=("Arial", "11", "normal"),
                                 text="Test your geographic knowledge and answer questions correctly. "
                                      "Select the number of rounds you would like to play.",
-                                wraplength=350, bg="#C7DAFF")
+                                wraplength=350)
 
         self.round_text.grid(row=1, padx=10)
 
-        self.round_error = Label(self.round_frame, font=("Arial", "11", "bold"), bg="#C7DAFF")
+        self.round_error = Label(self.round_frame, font=("Arial", "11", "bold"))
         self.round_error.grid(row=2)
 
         self.round_entry = Entry(self.round_frame, font=("Arial", "14"))
@@ -136,6 +145,13 @@ class AskRounds:
         self.enter_button = Button(self.round_frame, font=("Arial", "15", "bold"), text="Play", fg="white",
                                    command=self.check_rounds, bg="#2E74FF", width=18)
         self.enter_button.grid(row=4, padx=0, pady=5)
+
+        # List and loop to set background colour on
+        # everything except the buttons
+        recolour_list = [self.round_frame, self.round_heading, self.round_text, self.round_error]
+
+        for item in recolour_list:
+            item.config(bg=background)
 
     def check_rounds(self):
         """
@@ -184,22 +200,25 @@ class QuizType:
     """
 
     def __init__(self, rounds_wanted):
+        # Setup dialogue box and background colour
+        background = "#FFE1C6"
+
         self.play_box = Toplevel()
 
         # If users press the 'x' on the game window, end the entire game!
         self.play_box.protocol('WM_DELETE_WINDOW', root.destroy)
 
-        self.welcome_frame = Frame(self.play_box, padx=20, pady=10, bg="#FFE1C6")
+        self.quiztype_frame = Frame(self.play_box, padx=20, pady=10)
 
-        self.welcome_frame.grid()
+        self.quiztype_frame.grid()
 
         # Heading Text
-        self.welcome_heading = Label(self.welcome_frame,
+        self.quiztype_heading = Label(self.quiztype_frame,
                                      text="Please choose a Quiz Category",
-                                     font=("Arial", "18", "bold"), bg="#FFE1C6", width=31)
-        self.welcome_heading.grid(row=0)
+                                     font=("Arial", "18", "bold"), width=31)
+        self.quiztype_heading.grid(row=0)
 
-        self.button_frame = Frame(self.play_box, padx=20, pady=10, bg="#FFE1C6")
+        self.button_frame = Frame(self.play_box, padx=20, pady=10)
         self.button_frame.grid(row=1)
 
         # Button List
@@ -220,6 +239,13 @@ class QuizType:
         # Retrieves the buttons
         self.country_button = button_ref_list[0]
         self.capital_button = button_ref_list[1]
+
+        # List and loop to set background colour on
+        # everything except the buttons
+        recolour_list = [self.quiztype_frame, self.quiztype_heading, self.button_frame]
+
+        for item in recolour_list:
+            item.config(bg=background)
 
     def to_quiz(self, quiz_type, rounds_wanted):
         # Deletes frames
@@ -473,6 +499,9 @@ class Stats:
 
     def __init__(self, partner, all_stats_info):
 
+        # Setup dialogue box and background colour
+        background = "#EAB3DB"
+
         # disable buttons to prevent program crashing
         partner.hints_button.config(state=DISABLED)
         partner.end_game_button.config(state=DISABLED)
@@ -491,7 +520,7 @@ class Stats:
         self.stats_box.protocol('WM_DELETE_WINDOW',
                                 partial(self.close_stats, partner))
 
-        self.stats_frame = Frame(self.stats_box, width=350)
+        self.stats_frame = Frame(self.stats_box, width=350, bg=background)
         self.stats_frame.grid()
 
         success_rate = rounds_won / rounds_played * 100
@@ -510,8 +539,8 @@ class Stats:
             comment_string = "Oops - You lost every round! You might want to look at the hints!"
             comment_colour = "#F8CECC"
         else:
-            comment_string = ""
-            comment_colour = "#F0F0F0"
+            comment_string = "============================"
+            comment_colour = background
 
         heading_font = ("Arial", "16", "bold")
         normal_font = ("Arial", "14")
@@ -528,7 +557,7 @@ class Stats:
         stats_label_ref_list = []
         for count, item in enumerate(all_stats_strings):
             self.stats_label = Label(self.stats_frame, text=item[0], font=item[1],
-                                     anchor="w", justify="left",
+                                     anchor="w", justify="left", bg=background,
                                      padx=30, pady=5)
             self.stats_label.grid(row=count, sticky=item[2], padx=10)
             stats_label_ref_list.append(self.stats_label)
@@ -539,9 +568,10 @@ class Stats:
 
         # Stats Button
         self.dismiss_button = Button(self.stats_frame, font=("Arial", "16", "bold"),
-                                   text="Stats", width=9, fg="#FFFFFF",
-                                   bg="#DA67BC", command=self.close_stats)
-        self.dismiss_button.grid(row=4, column=1, padx=5, pady=5)
+                                   text="Close", width=18, fg="#FFFFFF",
+                                   bg="#DA67BC", command=partial(self.close_stats, partner))
+        self.dismiss_button.grid(row=4, padx=0, pady=10)
+
 
     def close_stats(self, partner):
         # Put help button back to normal...
