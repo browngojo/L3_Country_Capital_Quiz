@@ -260,6 +260,8 @@ class CountryCapitalQuiz:
     """
 
     def __init__(self, how_many, quiz_type):
+        # Setup dialogue box and background colour
+        background = "#FFE1C6"
 
         self.quiztype = quiz_type
         # rounds played - start with zero
@@ -281,7 +283,7 @@ class CountryCapitalQuiz:
 
         self.photo = ""
 
-        self.quiz_frame = Frame(self.play_box, padx=20, pady=10, bg="#FFE1C6")
+        self.quiz_frame = Frame(self.play_box, padx=20, pady=10)
 
         self.quiz_frame.grid()
 
@@ -289,31 +291,31 @@ class CountryCapitalQuiz:
 
         self.quiz_heading = Label(self.quiz_frame,
                                      text=f"{quiz_type} Quiz",
-                                     font=("Arial", "18", "bold"), bg="#FFE1C6", width=31)
+                                     font=("Arial", "18", "bold"), width=31)
         self.quiz_heading.grid(row=0)
 
         # Round heading
-        self.round_label = Label(self.quiz_frame, text="Round # of #", font=("Arial", "16", "bold"), bg="#FFE1C6", wraplength=300, justify="left")
+        self.round_label = Label(self.quiz_frame, text="Round # of #", font=("Arial", "16", "bold"), wraplength=300, justify="left")
 
         self.round_label.grid(row=1, pady=10, padx=10)
 
         # Update heading, and score to beat labels. "Hide" results label
-        self.round_heading = Label(self.quiz_frame, text="question", bg="#FFE1C6",
+        self.round_heading = Label(self.quiz_frame, text="question",
                                    font=("Arial", "15", "bold"))
         self.round_heading.grid(row=2)
 
         self.results_label = Label(self.quiz_frame, text="You chose, result",
-                                   font=("Arial", "12"), bg="#FFE1C6",
+                                   font=("Arial", "12"),
                                    wraplength=500, justify="left")
 
         self.results_label.grid(row=5, pady=10, padx=10)
 
         # Create a label to display the image
-        self.image_label = Label(self.quiz_frame, image=self.photo, bg="#FFE1C6")
+        self.image_label = Label(self.quiz_frame, image=self.photo)
         self.image_label.grid(row=3)
 
         # set up country button...
-        self.button_frame = Frame(self.quiz_frame, bg="#FFE1C6")
+        self.button_frame = Frame(self.quiz_frame)
         self.button_frame.grid(row=4)
 
         self.quiz_button_ref = []
@@ -338,7 +340,7 @@ class CountryCapitalQuiz:
         self.end_game_button = Button(self.quiz_frame, text="End", bg="#E23C3C", command=self.close_game, font=("Arial", "16", "bold"), fg="#FFFFFF", width=20)
         self.end_game_button.grid(row=8, padx=5, pady=5)
 
-        self.hint_stats_frame = Frame(self.quiz_frame, bg="#FFE1C6")
+        self.hint_stats_frame = Frame(self.quiz_frame)
         self.hint_stats_frame.grid(row=7)
 
         # Hints Button
@@ -354,6 +356,13 @@ class CountryCapitalQuiz:
         self.stats_button.grid(row=0, column=1, padx=5, pady=5)
 
         self.stats_button.config(state=DISABLED)
+
+        # List and loop to set background colour on
+        # everything except the buttons
+        recolour_list = [self.quiz_frame, self.quiz_heading, self.round_label, self.round_heading, self.results_label, self.image_label, self.button_frame, self.hint_stats_frame]
+
+        for item in recolour_list:
+            item.config(bg=background)
 
         # Once interface has been created, invoke new
         # round function for first round
