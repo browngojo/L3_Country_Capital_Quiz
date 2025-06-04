@@ -20,6 +20,9 @@ def get_flags():
     all_flags = list(csv.reader(file, delimiter=","))
     file.close()
 
+    # remove the first row
+    all_flags.pop(0)
+
     return all_flags
 
 
@@ -340,17 +343,17 @@ class CountryCapitalQuiz:
         self.end_game_button = Button(self.quiz_frame, text="End", bg="#E23C3C", command=self.close_game, font=("Arial", "16", "bold"), fg="#FFFFFF", width=20)
         self.end_game_button.grid(row=8, padx=5, pady=5)
 
-        self.hint_stats_frame = Frame(self.quiz_frame)
-        self.hint_stats_frame.grid(row=7)
+        self.help_stats_frame = Frame(self.quiz_frame)
+        self.help_stats_frame.grid(row=7)
 
-        # Hints Button
-        self.hints_button = Button(self.hint_stats_frame, font=("Arial", "16", "bold"),
-                                   text="Hints", width=9, fg="#FFFFFF",
+        # Help Button
+        self.help_button = Button(self.help_stats_frame, font=("Arial", "16", "bold"),
+                                   text="Help", width=9, fg="#FFFFFF",
                                    bg="#A680B8", command=self.to_hints)
-        self.hints_button.grid(row=0, column=0, padx=5, pady=5)
+        self.help_button.grid(row=0, column=0, padx=5, pady=5)
 
         # Stats Button
-        self.stats_button = Button(self.hint_stats_frame, font=("Arial", "16", "bold"),
+        self.stats_button = Button(self.help_stats_frame, font=("Arial", "16", "bold"),
                                    text="Stats", width=9, fg="#FFFFFF",
                                    bg="#DA67BC", command=self.to_stats)
         self.stats_button.grid(row=0, column=1, padx=5, pady=5)
@@ -359,7 +362,7 @@ class CountryCapitalQuiz:
 
         # List and loop to set background colour on
         # everything except the buttons
-        recolour_list = [self.quiz_frame, self.quiz_heading, self.round_label, self.round_heading, self.results_label, self.image_label, self.button_frame, self.hint_stats_frame]
+        recolour_list = [self.quiz_frame, self.quiz_heading, self.round_label, self.round_heading, self.results_label, self.image_label, self.button_frame, self.help_stats_frame]
 
         for item in recolour_list:
             item.config(bg=background)
@@ -598,8 +601,10 @@ class DisplayHints:
         background = "#d7c1e2"
         self.help_box = Toplevel()
 
-        # Disable help button
-        #partner.stats_button.config(state=DISABLED)
+        # disable buttons to prevent program crashing
+        partner.hints_button.config(state=DISABLED)
+        partner.end_game_button.config(state=DISABLED)
+        partner.stats_button.config(state=DISABLED)
 
         # If users press cross at top, closes help and 'releases' help button
         self.help_box.protocol('WM_DELETE_WINDOW',
