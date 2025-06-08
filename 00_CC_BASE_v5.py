@@ -197,7 +197,7 @@ class AskRounds:
                 self.round_entry.delete(0, END)
 
         else:
-            self.to_quiztype(-1)
+            self.to_quiztype(8758487)
 
     def to_quiztype(self, rounds_wanted):
         # Closes Ask Rounds GUI
@@ -423,13 +423,17 @@ class CountryCapitalQuiz:
 
         rounds_wanted = self.rounds_wanted.get()
 
-        if rounds_wanted == "inf":
-            self.rounds_wanted_displayed = "♾️"
-            self.rounds_wanted = -1
+        # If infinite button clicked...
+        if rounds_wanted == 8758487:
+            # Displays heading
+            self.rounds_wanted_displayed = "Infinite Mode"
+
+        else:
+            self.rounds_wanted_displayed = f"Round {rounds_played + 1} of {self.rounds_wanted}"
 
         # Update heading, and score to beat labels. "Hide" results label
         self.round_heading.config(text=question)
-        self.round_label.config(text=f"Round {rounds_played + 1} of {self.rounds_wanted_displayed}")
+        self.round_label.config(text=f"{self.rounds_wanted_displayed}")
         self.results_label.config(text=f"{'=' * 7}", bg="#FFE1C6")
 
         # enable country buttons (disabled at the end of the last round)
@@ -440,7 +444,7 @@ class CountryCapitalQuiz:
 
     def round_results(self, user_choice):
         """
-        Retrieves which button was pushed (index 0 - 3), retrieves country name
+        Retrieves which button was pushed, retrieves country name
         and checks if user was correct
         """
 
