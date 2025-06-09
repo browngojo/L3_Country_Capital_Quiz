@@ -146,12 +146,12 @@ class AskRounds:
 
         # Conversion, help and history / export buttons
         self.enter_button = Button(self.round_frame, font=("Arial", "15", "bold"), text="Play", fg="white",
-                                    command=lambda: self.check_rounds(round_type="finite"), bg="#2E74FF", width=18)
+                                    command=lambda: self.check_rounds(), bg="#2E74FF", width=18)
         self.enter_button.grid(row=4, padx=0, pady=5)
 
         # Button to take user to infinite mode
         self.inf_button = Button(self.round_frame, font=("Arial", "15", "bold"), text="Infinite Mode", fg="white",
-                                   command=lambda: self.check_rounds(round_type="infinite"), bg="#2E74FF", width=18)
+                                   command=lambda: self.check_rounds(8758487), bg="#2E74FF", width=18)
         self.inf_button.grid(row=5, padx=0, pady=5)
 
         # List and loop to set background colour on
@@ -161,12 +161,10 @@ class AskRounds:
         for item in recolour_list:
             item.config(bg=background)
 
-    def check_rounds(self, round_type):
+    def check_rounds(self, round_wanted=None):
         """
         Checks user's input to see if it is an integer
         """
-        # Retrieve temperature to be converted
-        rounds_wanted = self.round_entry.get()
 
         # Reset label and entry box (if we had an error)
         self.round_heading.config(fg="#000000", font=("Arial", "15", "bold"))
@@ -175,7 +173,11 @@ class AskRounds:
         error = "Oops - Please choose a whole number more than zero!"
         has_errors = "no"
 
-        if round_type != "infinite":
+        if round_wanted is None:
+
+            # Retrieve temperature to be converted
+            rounds_wanted = self.round_entry.get()
+
             # Checks that amount to be converted is a number above absolute zero
             try:
                 rounds_wanted = int(rounds_wanted)
@@ -197,7 +199,8 @@ class AskRounds:
                 self.round_entry.delete(0, END)
 
         else:
-            self.to_quiztype(8758487)
+            rounds_wanted = int(round_wanted)
+            self.to_quiztype(rounds_wanted)
 
     def to_quiztype(self, rounds_wanted):
         # Closes Ask Rounds GUI
@@ -273,9 +276,9 @@ class CountryCapitalQuiz:
 
     def __init__(self, how_many, quiz_type):
         # Setup dialogue box and background colour
-        background = "#FFE1C6"
-
         self.rounds_wanted_displayed = ""
+
+        background = "#FFE1C6"
 
         self.quiztype = quiz_type
         # rounds played - start with zero
@@ -429,7 +432,7 @@ class CountryCapitalQuiz:
             self.rounds_wanted_displayed = "Infinite Mode"
 
         else:
-            self.rounds_wanted_displayed = f"Round {rounds_played + 1} of {self.rounds_wanted}"
+            self.rounds_wanted_displayed = f"Round {rounds_played + 1} of {rounds_wanted}"
 
         # Update heading, and score to beat labels. "Hide" results label
         self.round_heading.config(text=question)
@@ -480,8 +483,10 @@ class CountryCapitalQuiz:
         self.next_button.config(state=NORMAL)
         self.stats_button.config(state=NORMAL)
 
+        rounds_wanted = self.rounds_wanted.get()
+
         # Code for when the game ends
-        if rounds_played == self.rounds_wanted:
+        if rounds_played == rounds_wanted:
 
             # Configure 'end game' labels / buttons
             self.round_label.config(text="Game Over")
@@ -637,7 +642,6 @@ class DisplayHelp:
         help_text = "Welcome to Countries and Capitals Quiz!\n\nThis quiz is made to test your knowledge and in each round you are given a question such as 'What is the Capital of New Zealand?' and you will be given 4 options to choose from. " \
                     "\n\nOnce you have chosen an option, click the 'Next Round' Button to move on. If you would like to view how well you did, you can click the 'Stats' Button from which you can also export a file with the stats.\n\nEnjoy the Quiz and all the best!"
 
-        print("hello")
         self.help_text_label = Label(self.help_frame,
                                      text=help_text, wraplength=350,
                                      justify="left")
