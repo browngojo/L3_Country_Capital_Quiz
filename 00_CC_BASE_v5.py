@@ -1,5 +1,6 @@
-# V4 of Entire Capital & Country QUIZ
-# This one includes the two quizzes and the
+# V5 of Entire Capital & Country QUIZ
+# This is fully working with everything from V4
+# but also added Infinite Mode
 
 
 from tkinter import *
